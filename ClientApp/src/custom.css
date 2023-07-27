@@ -1,0 +1,25 @@
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #E01A76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.containerApp {
+    width: 1200px;
+    padding:10px 10px 0px 10px;
+    border:1px solid;
+    border-radius: 8px;
+    background-color: white;
+    overflow:hidden;
+    flex:1px;
+    flex-wrap:wrap;
+}
