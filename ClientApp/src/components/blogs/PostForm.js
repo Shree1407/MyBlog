@@ -21,15 +21,19 @@ function PostForm() {
         e.preventDefault();
         const AuthorId = ID; // sessionStorage.getItem("ID") == null ? 1 : sessionStorage.getItem("ID");
         try {
-            const formData = new FormData();
-            formData.append('title', title);
-            formData.append('description', description);
-            formData.append('image', image);
-            formData.append('authorId', AuthorId);
+            //const formData = new FormData();
+            //formData.append('title', title);
+            //formData.append('description', description);
+            //formData.append('image', image);
+            //formData.append('authorId', AuthorId);
 
             const response = await fetch(POSTAPIURL, {
                 method: 'POST',
-                body: formData,
+                body: JSON.stringify({
+                    title,
+                    description,
+                    AuthorId
+                })
             });
 
             if (!response.ok) {
@@ -42,6 +46,7 @@ function PostForm() {
             setImage(null);
         } catch (error) {
             console.error(error);
+            alert("Somthing went wrong try after some time")
             // Handle error, show error message, etc.
         }
     };

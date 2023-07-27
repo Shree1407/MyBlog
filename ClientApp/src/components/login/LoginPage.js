@@ -31,6 +31,8 @@ const LoginPage = ({ setIsLoggedIn }) => {
                 .then(response => response.json())
                 .then(data => {
                     sessionStorage.setItem("MyToken", data.token);
+                    sessionStorage.setItem("UserData", JSON.stringify(data.user));
+                    sessionStorage.setItem("Userid", data.user.id);
                     sessionStorage.setItem("UserName", username);
                     setIsLoggedIn(true);
                     navigate('/Home');

@@ -43,5 +43,6 @@ namespace MyBlog.Controllers
 
             return Ok(new { Message = "With Email - " + registrationModel.Email + " user alreday available." });
         }
+
     }
 }

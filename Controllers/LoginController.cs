@@ -36,13 +36,16 @@ namespace MyBlog.Controllers
             if (user != null)
             {
                 var tokenString = GenerateToken(user);
-                response = Ok(new { token = tokenString });
+                response = Ok(new { 
+                    token = tokenString,
+                    user
+                });
             }
 
             return response;
         }
 
-        private User AuthenticateUser(User login)
+        private UserMaster AuthenticateUser(User login)
         {
             var _userMaster = _applicationDbContext.UserMasters.FirstOrDefault(u =>
                             Convert.ToString(u.Email).ToLower() == Convert.ToString(login.Username).ToLower() &&
@@ -50,13 +53,13 @@ namespace MyBlog.Controllers
                             );
             if (_userMaster != null)
             {
-                return new User { Username = "admin" };
+                return _userMaster;
             }
 
             return null;
         }
 
-        private string GenerateToken(User user)
+        private string GenerateToken(UserMaster user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]);
@@ -64,7 +67,7 @@ namespace MyBlog.Controllers
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Name, user.Username)
+                    new Claim(ClaimTypes.Name, user.Email)
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

@@ -1,6 +1,7 @@
 ﻿import React, { useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 function Logout() {
+    const navigate = useNavigate();
     useEffect(() => {
         logoutpage();
     }, []);
@@ -11,12 +12,11 @@ function Logout() {
             const [name] = cookie.split('=');
             document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
         });
-
         // Clear session storage
         sessionStorage.clear();
 
         // Redirect to login page
-        window.location.href = '/login';
+        navigate('/Login');
     };
 
     return (

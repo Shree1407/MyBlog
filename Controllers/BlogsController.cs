@@ -17,13 +17,15 @@ namespace MyBlog.Controllers
             _context = context;
         }
         [HttpGet]
+        [Route("GetBlogs")]
         public IEnumerable<Post> Get()
         {
            return  _context.Posts.OrderByDescending(u => u.Id).ToArray();
 
         }
-        [HttpPost]
-        public IEnumerable<Post> Post(int id)
+        [HttpGet]
+        [Route("GetByIdBlogs/{id}")]
+        public IEnumerable<Post> ByIdBlogs(int id)
         {
             return _context.Posts.Where(a => a.AuthorId == id).OrderByDescending(u => u.Id).ToArray();
 

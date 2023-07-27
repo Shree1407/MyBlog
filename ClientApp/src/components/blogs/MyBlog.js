@@ -1,6 +1,6 @@
 ﻿
 import React, { useState, useEffect } from 'react';
-import { FETCHBLOGSAPIURL } from '../../ConfigFile';
+import { FETCHMYBLOGSAPIURL } from '../../ConfigFile';
 import MyBlogCard from '../Card/MyBlogCard';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -14,7 +14,8 @@ const MyBlog = () => {
 
     const fetchBlogs = async () => {
         try {
-            const response = await fetch(FETCHBLOGSAPIURL);
+            const id = sessionStorage.getItem("Userid");
+            const response = await fetch(FETCHMYBLOGSAPIURL + "/" + id);
             const data = await response.json();
             console.log(data);
 

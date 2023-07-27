@@ -10,11 +10,10 @@ function Profile() {
 
     const fetchUserDetails = async () => {
         try {
-            const response = await fetch(Profile);
-            if (!response.ok) {
-                throw new Error('Failed to fetch user details.');
-            }
-            const data = await response.json();
+            
+            const response = sessionStorage.getItem("UserData");
+            const data = JSON.parse(response);
+            console.log(data)
             setUser(data);
             setLoading(false);
         } catch (error) {

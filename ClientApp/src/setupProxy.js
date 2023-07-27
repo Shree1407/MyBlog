@@ -8,7 +8,9 @@ const context =  [
     "/weatherforecast",
     "/Login",
     "/Registration",
-    "/Blogs",
+    "/Blogs/GetBlogs",
+    "/Blogs/GetByIdBlogs",
+    '/PostForm',
 ];
 
 module.exports = function(app) {
