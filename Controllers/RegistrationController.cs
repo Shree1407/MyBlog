@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.Models;
 using MyBlog.Models.Login;
+using MyBlog.Models.Services;
 
 namespace MyBlog.Controllers
 {
@@ -9,20 +10,17 @@ namespace MyBlog.Controllers
     [Route("[controller]")]
     public class RegistrationController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-
-        public RegistrationController(ApplicationDbContext context)
+        private readonly IRegistrationData _registrationData;
+        public RegistrationController(IRegistrationData context)
         {
-            _context = context;
+            _registrationData = context;
         }
 
         [HttpPost]
         public IActionResult Registration([FromBody] UserMaster registrationModel)
         {
             // Perform any necessary validation
-            var _userdetails = _context.UserMasters.FirstOrDefault(a =>
-            Convert.ToString(a.Email).ToLower() == Convert.ToString(registrationModel.Email).ToLower()
-            );
+            var _userdetails = _registrationData.GetUserMasterByEmail(registrationModel.Email);
 
             if (_userdetails == null)
             {
@@ -35,13 +33,11 @@ namespace MyBlog.Controllers
                     Email = registrationModel.Email,
                     Password = registrationModel.Password,
                 };
-
-                _context.UserMasters.Add(user);
-                _context.SaveChanges();
+                _registrationData.PostUserMaster(user);
                 return Ok(new { Message = "Registration successful" });
             }
 
-            return Ok(new { Message = "With Email - " + registrationModel.Email + " user alreday available." });
+            return BadRequest(new { Message = "With Email - " + registrationModel.Email + " user alreday available." });
         }
 
     }

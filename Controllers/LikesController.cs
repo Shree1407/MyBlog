@@ -4,41 +4,32 @@ using MyBlog.Models.Blog;
 using MyBlog.Models;
 using MyBlog.Models.Login;
 using Microsoft.EntityFrameworkCore;
+using MyBlog.Models.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyBlog.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
+    [Route("[controller]")]
     [ApiController]
     public class LikesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        public LikesController(ApplicationDbContext context)
+        //private readonly ApplicationDbContext _context;
+        //public LikesController(ApplicationDbContext context)
+        //{
+        //    _context = context;
+        //}
+        private readonly ILikesData _likeData;
+        public LikesController(ILikesData likeData)
         {
-            _context = context;
+            _likeData = likeData;
         }
         [HttpPost]
-        public IActionResult Likes(Like _like)
+        public async Task<IActionResult> Likes(Like _like)
         {
-            var liekdata = _context.Likes.FirstOrDefault(a => a.PostID == _like.PostID && a.AuthorId == _like.AuthorId);
-            if (liekdata == null)
+            if (_likeData.postLike(_like))
             {
-                var like = new Like
-                {
-                    AuthorId = _like.AuthorId,
-                    PostID = _like.PostID
-                };
-
-                _context.Likes.Add(like);
-                _context.SaveChanges();
-
-                var postdata = _context.Posts.FirstOrDefault(a => a.Id == _like.PostID);
-                if (postdata == null)
-                {
-                    postdata.numLikes = postdata.numLikes + 1;
-                    _context.Entry(postdata).State = EntityState.Modified; 
-                    _context.SaveChanges();
-                }
-                return Ok();
+                return Ok(new { Message = "Successful" });
             }
             return NoContent();
 

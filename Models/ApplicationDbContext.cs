@@ -1,11 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyBlog.Models.Blog;
 using MyBlog.Models.Login;
+using MyBlog.Models.Services;
 
 namespace MyBlog.Models
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
+        public ApplicationDbContext()
+        {
+        }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<UserMaster> UserMasters { get; set; }
         public DbSet<Post> Posts { get; set; }

@@ -1,29 +1,39 @@
-import FetchData from "./components/FetchData";
-import BlogPage from './components/blogs/BlogPage';
-import MyBlog from './components/blogs/MyBlog';
-import PostForm from './components/blogs/PostForm';
-import Profile from './components/Profile/Profile'
-import Logout from './components/logout/Logout'
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import Blog from "./pages/Blog";
+import Logout from "./pages/Logout";
+import MyBlog from "./pages/MyBlog";
+import CreateBlog from "./pages/CreateBlog";
+import Dummy from "./pages/Dummy";
+
 const AppRoutes = [
     {
-        path: '/Home',
-        element: <BlogPage />
+        path: '/Dummy',
+        element: <Dummy />
     },
     {
-        path: '/Create',
-        element: <PostForm />
+        path: '/',
+        element: <Login />
+    },
+    {
+        path: '/SignUp',
+        element: <SignUp />
+    },
+    {
+        path: '/Blog',
+        element: <Blog />
+    },
+    {
+        path: '/Logout',
+        element: <Logout />
     },
     {
         path: '/MyBlog',
         element: <MyBlog />
     },
     {
-        path: '/Profile',
-        element: <Profile />
-    },
-    {
-        path: '/Logout',
-        element: <Logout />
+        path: '/CreateBlog',
+        element: <CreateBlog />
     }
 ];
 

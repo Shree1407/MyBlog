@@ -1,0 +1,13 @@
+﻿const user = JSON.parse(sessionStorage.getItem("UserData"));
+export const ID = user == null ? 0 : user.id;
+export const LOGINAPIURL = 'Login';
+export const REGISTRATIONAPIURL = 'Registration';
+export const FETCHBLOGSAPIURL = 'Blogs/GetBlogs';
+export const FETCHMYBLOGSAPIURL = 'Blogs/GetByIdBlogs';
+export const LIKESAPIURL = 'Likes';
+export const POSTAPIURL = 'PostForm/PostFormData';
+export const DELETEPOSTAPIURL = 'PostForm/DeletePost';
+export const PROFILEAPIURL = 'Profile';
+export const GETCOMMENTSAPIURL = 'Comment/GetComment';
+export const POSTCOMMENTSAPIURL = 'Comment/PostComment';
+export const BASEPATH = "https://localhost:7264/";

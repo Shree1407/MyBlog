@@ -5,19 +5,29 @@ using MyBlog.Models;
 using MyBlog.Models.Login;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using MyBlog.Models.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyBlog.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class PostFormController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        public PostFormController(ApplicationDbContext context)
+        //private readonly ApplicationDbContext _context;
+        //public PostFormController(ApplicationDbContext context)
+        //{
+        //    _context = context;
+        //}
+        private readonly IPostFormData _formData;
+        public PostFormController(IPostFormData formData)
         {
-            _context = context;
+            _formData = formData;
         }
+
         [HttpPost]
+        [Route("PostFormData")]
         public async Task<IActionResult> PostForm([FromForm] CreatePost createpost)
         {
 
@@ -35,28 +45,27 @@ namespace MyBlog.Controllers
                 var imagePath = await UploadImage(createpost.Image);
                 _post.ImagePath = imagePath;
             }
-
-            _context.Posts.Add(_post);
-            _context.SaveChanges();
-            return Ok(new { Message = "Registration successful" });
+            _formData.PostsData(_post);
+            return Ok(new { Message = "successful post created" });
         }
         [HttpDelete]
-        public IActionResult DeletePostForm(int Id)
+        [Route("DeletePost/{id}")]
+        public IActionResult DeletePostForm(int id)
         {
-            var postdetails = _context.Posts.Find(Id);
-            if (postdetails != null)
+            if (_formData.DeletePostData(id))
             {
-                _context.Entry(postdetails).State = EntityState.Deleted;
-                _context.SaveChangesAsync();
+                return Ok(new { Message = "Deleted successful" });
             }
-            return Ok(new { Message = "Deleted successful" });
+            return NoContent();
         }
         [HttpPatch]
         public IActionResult UpdatedPostForm([FromBody] Post createpost)
         {
-            _context.Entry(createpost).State = EntityState.Modified;
-            _context.SaveChangesAsync();
-            return Ok(new { Message = "Updated successful" });
+            if (_formData.UpdatedPost(createpost))
+            {
+                return Ok(new { Message = "Updated successful" });
+            }
+            return BadRequest();
         }
 
         private async Task<string> UploadImage(IFormFile image)
